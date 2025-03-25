@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 
 #[ORM\Entity(repositoryClass: ProductRepositoryInterface::class)]
+#[ORM\Table(name: 'products')]
 class Product
 {
     use Timestampable;
@@ -23,7 +24,7 @@ class Product
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'categories')]
     #[JoinTable(name: 'products_categories')]
-    private readonly Collection $categories;
+    private Collection $categories;
 
     public function __construct(
         #[ORM\Column(name: 'name', type: Types::STRING)]

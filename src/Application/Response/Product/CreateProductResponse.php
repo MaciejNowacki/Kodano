@@ -13,7 +13,7 @@ readonly class CreateProductResponse
         private string            $name,
         private float             $price,
         private DateTimeInterface $createdAt,
-        private DateTimeInterface $updatedAt
+        private ?DateTimeInterface $updatedAt
     )
     {
     }
@@ -38,7 +38,7 @@ readonly class CreateProductResponse
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }

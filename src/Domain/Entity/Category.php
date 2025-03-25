@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepositoryInterface::class)]
+#[ORM\Table(name: 'categories')]
 class Category
 {
     use Timestampable;

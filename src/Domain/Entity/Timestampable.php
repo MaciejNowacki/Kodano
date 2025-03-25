@@ -11,10 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 trait Timestampable // TODO: use doctrine events
 {
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    public ?DateTimeImmutable $updatedAt = null;
+    private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    public ?DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     public function getUpdatedAt(): ?DateTimeImmutable
     {
