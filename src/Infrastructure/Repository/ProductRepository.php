@@ -25,6 +25,12 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
         $this->getEntityManager()->flush();
     }
 
+    public function update(Product $entity): void
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+
     public function getById(int $id): ?Product
     {
         return $this->find($id);

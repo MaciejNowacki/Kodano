@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\UI\Controller;
 
+use App\Application\Command\Product\AssignProductToCategoryCommand;
 use App\Application\Command\Product\CreateProductCommand;
 use App\Application\Exception\ValidateException;
 use App\Application\Request\Product\CreateProductRequest;
+use App\Application\Request\Product\AssignProductToCategoryRequest;
 use App\Application\Response\ErrorResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,6 +36,40 @@ class ProductsController extends AbstractController
         try {
             $dto = $this->messageBus->dispatch(new CreateProductCommand($request->getName(), $request->getPrice(), $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
         } catch (Throwable $e) { // TODO: extract to exception subscriber
+            $previous = $e->getPrevious();
+
+            if ($previous instanceof ValidateException) {
+                return $this->json(
+                    new ErrorResponse(
+                        $previous->getMessage()
+                    ),
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+
+            return $this->json(
+                new ErrorResponse(
+                    'Something went wrong!'
+                ),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+        return $this->json(
+            $dto,
+            Response::HTTP_OK
+        );
+    }
+
+    #[Route(path: '/{productId}/categories', name: 'patch', methods: ['PATCH'])]
+    final public function patchAction(
+        #[MapRequestPayload] AssignProductToCategoryRequest $request,
+        int                                                 $productId
+    ): JsonResponse
+    {
+        try {
+            $dto = $this->messageBus->dispatch(new AssignProductToCategoryCommand($productId, $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
+        } catch (Throwable $e) { // TODO: exception subscriber
             $previous = $e->getPrevious();
 
             if ($previous instanceof ValidateException) {

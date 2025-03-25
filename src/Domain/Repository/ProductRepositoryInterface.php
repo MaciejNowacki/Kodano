@@ -10,5 +10,7 @@ interface ProductRepositoryInterface
 {
     public function insert(Product $entity): void;
 
+    public function update(Product $entity): void;
+
     public function getById(int $id): ?Product;
 }
