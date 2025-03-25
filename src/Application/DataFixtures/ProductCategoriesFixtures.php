@@ -28,7 +28,6 @@ class ProductCategoriesFixtures extends Fixture
     {
         foreach ($this->categories as $category) {
             $category = new Category($category);
-            $category->setCreatedAt(new DateTimeImmutable());
 
             $manager->persist($category);
         }

@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 
 #[ORM\Entity(repositoryClass: ProductRepositoryInterface::class)]
 #[ORM\Table(name: 'products')]
+#[ORM\HasLifecycleCallbacks]
 class Product
 {
     use Timestampable;

@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepositoryInterface::class)]
 #[ORM\Table(name: 'categories')]
+#[ORM\HasLifecycleCallbacks]
 class Category
 {
     use Timestampable;

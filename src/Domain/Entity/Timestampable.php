@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-trait Timestampable // TODO: use doctrine events
+trait Timestampable
 {
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;
@@ -34,5 +34,18 @@ trait Timestampable // TODO: use doctrine events
     public function setCreatedAt(?DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateTimestamps(): void
+    {
+        $now = new DateTimeImmutable();
+
+        if ($this->getId() === null) {
+            $this->setCreatedAt($now);
+        } else {
+            $this->setUpdatedAt($now);
+        }
     }
 }

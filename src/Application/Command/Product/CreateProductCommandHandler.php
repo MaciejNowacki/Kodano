@@ -11,7 +11,6 @@ use App\Domain\Entity\Category;
 use App\Domain\Entity\Product;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\ProductRepositoryInterface;
-use DateTimeImmutable;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -39,7 +38,6 @@ readonly class CreateProductCommandHandler
         }
 
         $entity = new Product($command->getName(), $command->getPrice());
-        $entity->setCreatedAt(new DateTimeImmutable());
 
         $categories = $this->categoryRepository->getByIds($command->getCategoryIds());
 
