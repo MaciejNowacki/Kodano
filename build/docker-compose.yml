@@ -1,0 +1,27 @@
+name: Kodano
+services:
+  php:
+    build:
+      context: 'php'
+    container_name: php
+    volumes:
+      - ../:/var/www/project
+    environment:
+      HOST_IP: ${DOCKER_GATEWAY_HOST:-host.docker.internal}
+
+  apache:
+    build: 'apache'
+    container_name: www
+    depends_on:
+      - php
+    ports:
+      - "80:80"
+    volumes:
+      - ../:/var/www/project
+  db:
+    image: mysql:9.2.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: change_me
+      MYSQL_DATABASE: main
