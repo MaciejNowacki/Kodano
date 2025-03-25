@@ -4,6 +4,9 @@
 Install project
 
 ```bash
+  docker-compose up -d
+  docker exec -it php bash
+  cd ../project
   composer install
   php bin/console doctrine:migrations:execute --force
   php bin/console doctrine:fixtures:load
