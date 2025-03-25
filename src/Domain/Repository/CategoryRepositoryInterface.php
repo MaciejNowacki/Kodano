@@ -10,5 +10,5 @@ interface CategoryRepositoryInterface
 {
     public function insert(Category $entity): void;
 
-    public function getById(int $id): ?Category;
+    public function getByIds(array $ids): array;
 }

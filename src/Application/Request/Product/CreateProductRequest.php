@@ -8,7 +8,7 @@ class CreateProductRequest
 {
     public ?string $name = null;
     public ?float $price = null;
-    public ?int $categoryId = null;
+    public ?array $categoryIds = [];
 
     public function getName(): ?string
     {
@@ -20,8 +20,8 @@ class CreateProductRequest
         return $this->price;
     }
 
-    public function getCategoryId(): ?int
+    public function getCategoryIds(): ?array
     {
-        return $this->categoryId;
+        return $this->categoryIds;
     }
 }

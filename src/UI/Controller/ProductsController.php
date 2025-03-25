@@ -32,7 +32,7 @@ class ProductsController extends AbstractController
     ): JsonResponse
     {
         try {
-            $dto = $this->messageBus->dispatch(new CreateProductCommand($request->getName(), $request->getPrice(), $request->getCategoryId()))->last(HandledStamp::class)->getResult();
+            $dto = $this->messageBus->dispatch(new CreateProductCommand($request->getName(), $request->getPrice(), $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
         } catch (Throwable $e) { // TODO: extract to exception subscriber
             $previous = $e->getPrevious();
 

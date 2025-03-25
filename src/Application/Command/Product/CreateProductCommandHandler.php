@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Application\Command\Product;
 
 use App\Application\Exception\ValidateException;
-use App\Application\Response\Product\CreateProductResponse;
+use App\Application\Response\CategoryResponse;
+use App\Application\Response\ProductResponse;
+use App\Domain\Entity\Category;
 use App\Domain\Entity\Product;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\ProductRepositoryInterface;
@@ -27,7 +29,7 @@ readonly class CreateProductCommandHandler
     /**
      * @throws ValidateException
      */
-    public function __invoke(CreateProductCommand $command): CreateProductResponse
+    public function __invoke(CreateProductCommand $command): ProductResponse
     {
         $errors = $this->validator->validate($command);
 
@@ -36,24 +38,22 @@ readonly class CreateProductCommandHandler
             throw new ValidateException('[' . $error->getPropertyPath() . '] ' . $error->getMessage()); // TODO: more details
         }
 
-        $category = $this->categoryRepository->getById($command->getCategoryId());
-
-        if (!$category) {
-            throw new ValidateException('Category not found');
-        }
-
         $entity = new Product($command->getName(), $command->getPrice());
         $entity->setCreatedAt(new DateTimeImmutable());
-        $entity->getCategories()->add($category);
+
+        $categories = $this->categoryRepository->getByIds($command->getCategoryIds());
+
+        foreach ($categories as $category) {
+            $entity->getCategories()->add($category);
+        }
 
         $this->productRepository->insert($entity);
 
-        return new CreateProductResponse(
+        return new ProductResponse(
             $entity->getId(),
             $entity->getName(),
             $entity->getPrice(),
-            $entity->getCreatedAt(),
-            $entity->getUpdatedAt()
+            array_map(static fn(Category $category) => new CategoryResponse($category->getId(), $category->getCode()), $entity->getCategories()->toArray())
         );
     }
 }
