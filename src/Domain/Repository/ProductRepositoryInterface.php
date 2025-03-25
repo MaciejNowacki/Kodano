@@ -13,4 +13,6 @@ interface ProductRepositoryInterface
     public function update(Product $entity): void;
 
     public function getById(int $id): ?Product;
+
+    public function getAll(): array;
 }

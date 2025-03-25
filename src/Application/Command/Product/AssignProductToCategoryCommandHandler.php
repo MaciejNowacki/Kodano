@@ -52,11 +52,6 @@ readonly class AssignProductToCategoryCommandHandler
 
         $this->productRepository->update($entity);
 
-        return new ProductResponse(
-            $entity->getId(),
-            $entity->getName(),
-            $entity->getPrice(),
-            array_map(static fn(Category $category) => new CategoryResponse($category->getId(), $category->getCode()), $entity->getCategories()->toArray())
-        );
+        return ProductResponse::fromEntity($entity);
     }
 }

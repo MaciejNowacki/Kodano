@@ -35,4 +35,9 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
     {
         return $this->find($id);
     }
+
+    public function getAll(): array
+    {
+        return $this->findAll();
+    }
 }

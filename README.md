@@ -13,7 +13,8 @@
 | `price` | `float` | **Required**. price |
 | `categoryIds` | `array` | **Required**. category IDs |
 
-#### Create product
+
+#### Assign product to categories
 
 ```http
   PATCH /products/{productId}/categories
@@ -23,5 +24,23 @@
 |:--------------|:--------|:---------------------------|
 | `productId`   | `query` | **Required**. product ID   |
 | `categoryIds` | `array` | **Required**. category IDs |
+
+
+#### Product details
+
+```http
+  GET /products/{productId}
+```
+
+| Parameter     | Type    | Description                |
+|:--------------|:--------|:---------------------------|
+| `productId`   | `query` | **Required**. product ID   |
+
+#### Products details
+
+```http
+  GET /products
+```
+
 
 

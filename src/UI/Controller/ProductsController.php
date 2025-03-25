@@ -7,6 +7,7 @@ namespace App\UI\Controller;
 use App\Application\Command\Product\AssignProductToCategoryCommand;
 use App\Application\Command\Product\CreateProductCommand;
 use App\Application\Exception\ValidateException;
+use App\Application\Query\Product\ProductCollectionQuery;
 use App\Application\Request\Product\CreateProductRequest;
 use App\Application\Request\Product\AssignProductToCategoryRequest;
 use App\Application\Response\ErrorResponse;
@@ -34,7 +35,7 @@ class ProductsController extends AbstractController
     ): JsonResponse
     {
         try {
-            $dto = $this->messageBus->dispatch(new CreateProductCommand($request->getName(), $request->getPrice(), $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
+            $result = $this->messageBus->dispatch(new CreateProductCommand($request->getName(), $request->getPrice(), $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
         } catch (Throwable $e) { // TODO: extract to exception subscriber
             $previous = $e->getPrevious();
 
@@ -56,7 +57,7 @@ class ProductsController extends AbstractController
         }
 
         return $this->json(
-            $dto,
+            $result,
             Response::HTTP_OK
         );
     }
@@ -68,7 +69,7 @@ class ProductsController extends AbstractController
     ): JsonResponse
     {
         try {
-            $dto = $this->messageBus->dispatch(new AssignProductToCategoryCommand($productId, $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
+            $result = $this->messageBus->dispatch(new AssignProductToCategoryCommand($productId, $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
         } catch (Throwable $e) { // TODO: exception subscriber
             $previous = $e->getPrevious();
 
@@ -90,7 +91,27 @@ class ProductsController extends AbstractController
         }
 
         return $this->json(
-            $dto,
+            $result,
+            Response::HTTP_OK
+        );
+    }
+
+    #[Route(name: 'cget', methods: ['GET'])]
+    final public function cgetAction(): JsonResponse
+    {
+        try {
+            $result = $this->messageBus->dispatch(new ProductCollectionQuery())->last(HandledStamp::class)->getResult();
+        } catch (Throwable) {
+            return $this->json(
+                new ErrorResponse(
+                    'Something went wrong!'
+                ),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+        return $this->json(
+            $result,
             Response::HTTP_OK
         );
     }
