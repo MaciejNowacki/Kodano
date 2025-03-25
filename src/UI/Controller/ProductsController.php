@@ -7,9 +7,12 @@ namespace App\UI\Controller;
 use App\Application\Command\Product\AssignProductToCategoryCommand;
 use App\Application\Command\Product\CreateProductCommand;
 use App\Application\Command\Product\DeleteProductCommand;
+use App\Application\Command\Product\UpdateProductCommand;
+use App\Application\Command\Product\UpdateProductCommandHandler;
 use App\Application\Query\Product\ProductCollectionQuery;
 use App\Application\Request\Product\AssignProductToCategoryRequest;
 use App\Application\Request\Product\CreateProductRequest;
+use App\Application\Request\Product\UpdateProductRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +36,20 @@ class ProductsController extends AbstractController
     ): JsonResponse
     {
         $result = $this->messageBus->dispatch(new CreateProductCommand($request->getName(), $request->getPrice(), $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
+
+        return $this->json(
+            $result,
+            Response::HTTP_OK
+        );
+    }
+
+    #[Route('/{productId}', name: 'put', methods: ['PUT'])]
+    final public function putAction(
+        #[MapRequestPayload] UpdateProductRequest $request,
+        int $productId
+    ): JsonResponse
+    {
+        $result = $this->messageBus->dispatch(new UpdateProductCommand($productId, $request->getName(), $request->getPrice(), $request->getCategoryIds()))->last(HandledStamp::class)->getResult();
 
         return $this->json(
             $result,

@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Application\Command\Product;
 
+use App\Application\Exception\NotFoundException;
 use App\Application\Exception\ValidateException;
+use App\Application\Response\CategoryResponse;
 use App\Application\Response\ProductResponse;
+use App\Domain\Entity\Category;
 use App\Domain\Entity\Product;
+use App\Domain\Exception\ProductException;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsMessageHandler]
-readonly class CreateProductCommandHandler
+readonly class UpdateProductCommandHandler
 {
     public function __construct(
         private ValidatorInterface          $validator,
@@ -25,8 +29,9 @@ readonly class CreateProductCommandHandler
 
     /**
      * @throws ValidateException
+     * @throws NotFoundException
      */
-    public function __invoke(CreateProductCommand $command): ProductResponse
+    public function __invoke(UpdateProductCommand $command): ProductResponse
     {
         $errors = $this->validator->validate($command);
 
@@ -35,7 +40,16 @@ readonly class CreateProductCommandHandler
             throw new ValidateException('[' . $error->getPropertyPath() . '] ' . $error->getMessage()); // TODO: more details
         }
 
-        $entity = new Product($command->getName(), $command->getPrice());
+        $entity = $this->productRepository->getById($command->getId());
+
+        if (!$entity) {
+            throw new NotFoundException(ProductException::PRODUCT_NOT_FOUND);
+        }
+
+        $entity
+            ->setName($command->getName())
+            ->setPrice($command->getPrice());
+        $entity->getCategories()->clear();
 
         $categories = $this->categoryRepository->getByIds($command->getCategoryIds());
 
@@ -43,7 +57,7 @@ readonly class CreateProductCommandHandler
             $entity->getCategories()->add($category);
         }
 
-        $this->productRepository->insert($entity);
+        $this->productRepository->update($entity);
 
         return ProductResponse::fromEntity($entity);
     }
