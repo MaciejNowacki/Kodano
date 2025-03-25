@@ -5,7 +5,7 @@ Install project
 
 ```bash
   composer install
-  php bin/console doctrine:migrations:execute
+  php bin/console doctrine:migrations:execute --force
   php bin/console doctrine:fixtures:load
 ```
 
@@ -47,12 +47,6 @@ Install project
 |:--------------|:--------|:---------------------------|
 | `productId`   | `query` | **Required**. product ID   |
 
-#### Products details
-
-```http
-  GET /products
-```
-
 #### Delete product
 
 ```http
@@ -62,4 +56,17 @@ Install project
 | Parameter     | Type    | Description                |
 |:--------------|:--------|:---------------------------|
 | `productId`   | `query` | **Required**. product ID   |
+
+
+#### Product list
+
+```http
+  GET /products
+```
+
+#### Category list
+
+```http
+  GET /categories
+```
 

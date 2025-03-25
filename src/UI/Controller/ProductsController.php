@@ -9,7 +9,7 @@ use App\Application\Command\Product\CreateProductCommand;
 use App\Application\Command\Product\DeleteProductCommand;
 use App\Application\Command\Product\UpdateProductCommand;
 use App\Application\Command\Product\UpdateProductCommandHandler;
-use App\Application\Query\Product\ProductCollectionQuery;
+use App\Application\Query\Product\CategoryCollectionQuery;
 use App\Application\Request\Product\AssignProductToCategoryRequest;
 use App\Application\Request\Product\CreateProductRequest;
 use App\Application\Request\Product\UpdateProductRequest;
@@ -87,7 +87,7 @@ class ProductsController extends AbstractController
     #[Route(name: 'cget', methods: ['GET'])]
     final public function cgetAction(): JsonResponse
     {
-        $result = $this->messageBus->dispatch(new ProductCollectionQuery())->last(HandledStamp::class)->getResult();
+        $result = $this->messageBus->dispatch(new CategoryCollectionQuery())->last(HandledStamp::class)->getResult();
 
         return $this->json(
             $result,
