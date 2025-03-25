@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Command\Product;
 
+use App\Application\Exception\NotFoundException;
 use App\Application\Exception\ValidateException;
-use App\Application\Response\CategoryResponse;
 use App\Application\Response\ProductResponse;
-use App\Domain\Entity\Category;
+use App\Domain\Exception\ProductException;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -26,6 +26,7 @@ readonly class AssignProductToCategoryCommandHandler
 
     /**
      * @throws ValidateException
+     * @throws NotFoundException
      */
     public function __invoke(AssignProductToCategoryCommand $command): ProductResponse
     {
@@ -39,7 +40,7 @@ readonly class AssignProductToCategoryCommandHandler
         $entity = $this->productRepository->getById($command->getProductId());
 
         if (!$entity) {
-            throw new ValidateException('Invalid product id');
+            throw new NotFoundException(ProductException::PRODUCT_NOT_FOUND);
         }
 
         $entity->getCategories()->clear();

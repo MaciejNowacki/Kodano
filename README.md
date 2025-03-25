@@ -1,4 +1,15 @@
 
+## Installation
+
+Install project
+
+```bash
+  composer install
+  php bin/console doctrine:migrations:execute
+  php bin/console doctrine:fixtures:load
+```
+
+
 ## API Reference
 
 #### Create product
@@ -42,5 +53,13 @@
   GET /products
 ```
 
+#### Delete product
 
+```http
+  DELETE /products/{productId}
+```
+
+| Parameter     | Type    | Description                |
+|:--------------|:--------|:---------------------------|
+| `productId`   | `query` | **Required**. product ID   |
 
