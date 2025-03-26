@@ -30,7 +30,7 @@ class Product
     public function __construct(
         #[ORM\Column(name: 'name', type: Types::STRING)]
         private ?string $name = null,
-        #[ORM\Column(name: 'price', type: Types::FLOAT)]
+        #[ORM\Column(name: 'price', type: Types::DECIMAL, precision: 10, scale: 2)]
         private ?float $price = null, // TODO: VO?
     )
     {
