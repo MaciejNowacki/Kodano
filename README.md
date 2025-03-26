@@ -29,7 +29,8 @@ Install project
 To run tests, run the following command
 
 ```bash
-  php ./vendor/bin/phpunit
+  php vendor/bin/phpunit tests
+  php vendor/bin/phpstan analyse src tests
 ```
 
 

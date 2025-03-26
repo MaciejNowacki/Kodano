@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraints\Type;
 readonly class AssignProductToCategoryCommand
 {
     public function __construct(
-        #[Type('int'), NotBlank, NotNull] private ?int                    $productId = null,
-        #[Type('array'), NotBlank, NotNull, Count(min: 1)] private ?array $categoryIds = [],
+        #[Type('int'), NotBlank, NotNull] private ?int                                           $productId = null,
+        /** @var null|int[] */ #[Type('array'), NotBlank, NotNull, Count(min: 1)] private ?array $categoryIds = [],
     )
     {
     }
@@ -23,6 +23,9 @@ readonly class AssignProductToCategoryCommand
         return $this->productId;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getCategoryIds(): ?array
     {
         return $this->categoryIds;

@@ -15,9 +15,9 @@ readonly class CategoryResponse
     {
     }
 
-    public static function fromEntity(Category $entity): static
+    public static function fromEntity(Category $entity): CategoryResponse
     {
-        return new static(
+        return new CategoryResponse(
             $entity->getId(),
             $entity->getCode()
         );

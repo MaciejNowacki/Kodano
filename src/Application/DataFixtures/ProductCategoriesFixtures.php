@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Application\DataFixtures;
 
 use App\Domain\Entity\Category;
-use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class ProductCategoriesFixtures extends Fixture
 {
+    /**
+     * @var string[]
+     */
     private array $categories = [
         "Wmn_Cloth",
         "Phn_Accss",

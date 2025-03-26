@@ -12,6 +12,7 @@ use Throwable;
 readonly class NotificationService implements NotificationInterface
 {
     public function __construct(
+        /** @var HandlingStrategyInterface[] */
         #[TaggedIterator('notification_handling_strategy')]
         private iterable $strategies,
         private LoggerInterface $notifyLogger,

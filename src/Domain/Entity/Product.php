@@ -21,8 +21,12 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    /** @phpstan-ignore property.unusedType */
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, Category>
+     */
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'categories')]
     #[JoinTable(name: 'products_categories')]
     private Collection $categories;
@@ -42,6 +46,9 @@ class Product
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Category>
+     */
     public function getCategories(): Collection
     {
         return $this->categories;

@@ -13,7 +13,7 @@ class ValidateException extends Exception
 {
     private ConstraintViolationListInterface $constraintViolationList;
 
-    public function __construct(ConstraintViolationListInterface $constraintViolationList, $message = ProductException::VALIDATION_ERROR, $code = 0, Throwable $previous = null)
+    public function __construct(ConstraintViolationListInterface $constraintViolationList, string $message = ProductException::VALIDATION_ERROR, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
 

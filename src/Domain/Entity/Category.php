@@ -19,9 +19,14 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    /** @phpstan-ignore property.unusedType */
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, Product>
+     */
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
+    /** @phpstan-ignore property.onlyRead */
     private Collection $products;
 
     public function __construct(
@@ -36,6 +41,9 @@ class Category
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, Product>
+     */
     public function getProducts(): Collection
     {
         return $this->products;

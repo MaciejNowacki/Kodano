@@ -6,7 +6,11 @@ namespace App\Application\Response;
 
 class ErrorResponse
 {
-    public function __construct(public string $message, public int $code = 0, public array $details = [])
+    public function __construct(
+        public string                     $message,
+        public int                        $code = 0,
+        /** @var string[] */ public array $details = []
+    )
     {
     }
 }

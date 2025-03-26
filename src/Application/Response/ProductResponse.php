@@ -10,17 +10,17 @@ use App\Domain\Entity\Product;
 readonly class ProductResponse
 {
     public function __construct(
-        public int    $id,
-        public string $name,
-        public float  $price,
-        public array  $categories
+        public int                                  $id,
+        public string                               $name,
+        public float                                $price,
+        /** @var CategoryResponse[] */ public array $categories
     )
     {
     }
 
-    public static function fromEntity(Product $entity): static
+    public static function fromEntity(Product $entity): ProductResponse
     {
-        return new static(
+        return new ProductResponse(
             $entity->getId(),
             $entity->getName(),
             $entity->getPrice(),

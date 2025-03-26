@@ -10,7 +10,14 @@ interface CategoryRepositoryInterface
 {
     public function insert(Category $entity): void;
 
+    /**
+     * @param int[] $ids
+     * @return Category[]
+     */
     public function getByIds(array $ids): array;
 
+    /**
+     * @return Category[]
+     */
     public function getAll(): array;
 }

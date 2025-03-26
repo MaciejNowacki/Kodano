@@ -8,8 +8,7 @@ use App\Application\Command\Product\AssignProductToCategoryCommand;
 use App\Application\Command\Product\CreateProductCommand;
 use App\Application\Command\Product\DeleteProductCommand;
 use App\Application\Command\Product\UpdateProductCommand;
-use App\Application\Command\Product\UpdateProductCommandHandler;
-use App\Application\Query\Product\CategoryCollectionQuery;
+use App\Application\Query\Category\CategoryCollectionQuery;
 use App\Application\Request\Product\AssignProductToCategoryRequest;
 use App\Application\Request\Product\CreateProductRequest;
 use App\Application\Request\Product\UpdateProductRequest;
@@ -46,7 +45,7 @@ class ProductsController extends AbstractController
     #[Route('/{productId}', name: 'put', methods: ['PUT'])]
     final public function putAction(
         #[MapRequestPayload] UpdateProductRequest $request,
-        int $productId
+        int                                       $productId
     ): JsonResponse
     {
         $result = $this->messageBus->dispatch(new UpdateProductCommand($productId, $request->getName(), $request->getPrice(), $request->getCategoryIds()))->last(HandledStamp::class)->getResult();

@@ -15,9 +15,9 @@ use Symfony\Component\Validator\Constraints\Type;
 readonly class CreateProductCommand
 {
     public function __construct(
-        #[Type('string'), NotBlank, NotNull, Length(max: 255)] private ?string           $name = null,
-        #[Type('float'), NotBlank, NotNull, Positive, LessThan(99999999)] private ?float $price = null,
-        #[Type('array'), NotBlank, NotNull, Count(min: 1)] private ?array                $categoryIds = [],
+        #[Type('string'), NotBlank, NotNull, Length(max: 255)] private ?string                   $name = null,
+        #[Type('float'), NotBlank, NotNull, Positive, LessThan(99999999)] private ?float         $price = null,
+        /** @var null|int[] */ #[Type('array'), NotBlank, NotNull, Count(min: 1)] private ?array $categoryIds = [],
     )
     {
     }
@@ -32,6 +32,9 @@ readonly class CreateProductCommand
         return $this->price;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getCategoryIds(): ?array
     {
         return $this->categoryIds;

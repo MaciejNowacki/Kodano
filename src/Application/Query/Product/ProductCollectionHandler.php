@@ -21,7 +21,8 @@ readonly class ProductCollectionHandler
     }
 
     /**
-     * @throws Exception
+     * @param ProductCollectionQuery $query
+     * @return ProductResponse[]
      */
     public function __invoke(ProductCollectionQuery $query): array
     {

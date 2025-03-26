@@ -16,5 +16,8 @@ interface ProductRepositoryInterface
 
     public function getById(int $id): ?Product;
 
+    /**
+     * @return Product[]
+     */
     public function getAll(): array;
 }

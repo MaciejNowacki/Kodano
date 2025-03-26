@@ -21,7 +21,8 @@ readonly class CategoryCollectionHandler
     }
 
     /**
-     * @throws Exception
+     * @param CategoryCollectionQuery $query
+     * @return CategoryResponse[]
      */
     public function __invoke(CategoryCollectionQuery $query): array
     {
