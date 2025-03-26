@@ -30,12 +30,19 @@ readonly class ExceptionSubscriber implements EventSubscriberInterface
         $exception = $this->extractException($event->getThrowable());
         $message = $exception->getMessage();
         $httpCode = $this->mapStatusCode($exception);
+        $details = [];
 
         if ($httpCode === Response::HTTP_INTERNAL_SERVER_ERROR && $this->kernel->getEnvironment() === self::PROD_ENV) {
             $message = self::DEFAULT_INTERNAL_ERROR_MESSAGE;
         }
 
-        $response = new JsonResponse(new ErrorResponse($message, $exception->getCode()));
+        if ($exception instanceof ValidateException) {
+            foreach ($exception->getConstraintViolationList() as $violation) {
+                $details[$violation->getPropertyPath()] = $violation->getMessage();
+            }
+        }
+
+        $response = new JsonResponse(new ErrorResponse($message, $exception->getCode(), $details));
         $response->setStatusCode($this->mapStatusCode($exception));
 
         $event->setResponse($response);

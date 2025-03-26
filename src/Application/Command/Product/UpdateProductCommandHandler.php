@@ -35,8 +35,7 @@ readonly class UpdateProductCommandHandler
         $errors = $this->validator->validate($command);
 
         if ($errors->count()) {
-            $error = $errors->get(0);
-            throw new ValidateException('[' . $error->getPropertyPath() . '] ' . $error->getMessage()); // TODO: more details
+            throw new ValidateException($errors);
         }
 
         $entity = $this->productRepository->getById($command->getId());
