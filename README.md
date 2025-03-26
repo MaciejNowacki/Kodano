@@ -1,15 +1,35 @@
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`APP_SECRET`
+
+`DATABASE_URL`
+
+`MAILER_DSN`
+
 
 ## Installation
 
 Install project
 
 ```bash
+  cd build
   docker-compose up -d
   docker exec -it php bash
   cd ../project
   composer install
   php bin/console doctrine:migrations:execute --force
   php bin/console doctrine:fixtures:load
+```
+
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  php ./vendor/bin/phpunit
 ```
 
 

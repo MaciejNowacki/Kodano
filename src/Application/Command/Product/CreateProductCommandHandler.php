@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Command\Product;
 
 use App\Application\Exception\ValidateException;
+use App\Application\Notification\NotificationInterface;
 use App\Application\Response\ProductResponse;
 use App\Domain\Entity\Product;
 use App\Domain\Repository\CategoryRepositoryInterface;
@@ -19,6 +20,7 @@ readonly class CreateProductCommandHandler
         private ValidatorInterface          $validator,
         private ProductRepositoryInterface  $productRepository,
         private CategoryRepositoryInterface $categoryRepository,
+        private NotificationInterface       $notificationService,
     )
     {
     }
@@ -45,6 +47,9 @@ readonly class CreateProductCommandHandler
 
         $this->productRepository->insert($entity);
 
-        return ProductResponse::fromEntity($entity);
+        $result = ProductResponse::fromEntity($entity);
+        $this->notificationService->notify('Created new product', json_encode($result));
+
+        return $result;
     }
 }

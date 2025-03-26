@@ -6,6 +6,7 @@ namespace App\Application\Command\Product;
 
 use App\Application\Exception\NotFoundException;
 use App\Application\Exception\ValidateException;
+use App\Application\Notification\NotificationInterface;
 use App\Application\Response\ProductResponse;
 use App\Domain\Exception\ProductException;
 use App\Domain\Repository\CategoryRepositoryInterface;
@@ -20,6 +21,7 @@ readonly class AssignProductToCategoryCommandHandler
         private ValidatorInterface          $validator,
         private ProductRepositoryInterface  $productRepository,
         private CategoryRepositoryInterface $categoryRepository,
+        private NotificationInterface       $notificationService
     )
     {
     }
@@ -53,6 +55,9 @@ readonly class AssignProductToCategoryCommandHandler
 
         $this->productRepository->update($entity);
 
-        return ProductResponse::fromEntity($entity);
+        $result = ProductResponse::fromEntity($entity);
+        $this->notificationService->notify('Assigned product to category', json_encode($result));
+
+        return $result;
     }
 }
