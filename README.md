@@ -36,7 +36,7 @@ To run tests, run the following command
 
 ## API Reference
 
-#### Create product
+### Create product
 
 ```http
   POST /products
@@ -48,8 +48,46 @@ To run tests, run the following command
 | `price` | `float` | **Required**. price |
 | `categoryIds` | `array` | **Required**. category IDs |
 
+#### Example request
+```json
+{
+  "name": "test1",
+  "price": 123.99,
+  "categoryIds": [
+    8
+  ]
+}
+```
 
-#### Assign product to categories
+#### Example response (200)
+```json
+{
+  "id": 15,
+  "name": "test1",
+  "price": 123.99,
+  "categories": [
+    {
+      "id": 8,
+      "code": "HndTools"
+    }
+  ]
+}
+```
+
+#### Example response (400)
+```json
+{
+  "message": "VALIDATION_ERROR",
+  "code": 0,
+  "details": {
+    "price": "This value should be positive."
+  }
+}
+```
+
+***
+
+### Assign product to categories
 
 ```http
   PATCH /products/{productId}/categories
@@ -60,8 +98,44 @@ To run tests, run the following command
 | `productId`   | `query` | **Required**. product ID   |
 | `categoryIds` | `array` | **Required**. category IDs |
 
+#### Example request
+```json
+{
+  "categoryIds": [
+    7
+  ]
+}
+```
 
-#### Product details
+#### Example response (200)
+```json
+{
+  "id": 15,
+  "name": "test1",
+  "price": 123.99,
+  "categories": [
+    {
+      "id": 7,
+      "code": "MkupCosm"
+    }
+  ]
+}
+```
+
+#### Example response (400)
+```json
+{
+  "message": "VALIDATION_ERROR",
+  "code": 0,
+  "details": {
+    "categoryIds": "This collection should contain 1 element or more."
+  }
+}
+```
+
+***
+
+### Product details
 
 ```http
   GET /products/{productId}
@@ -71,7 +145,9 @@ To run tests, run the following command
 |:--------------|:--------|:---------------------------|
 | `productId`   | `query` | **Required**. product ID   |
 
-#### Delete product
+***
+
+### Delete product
 
 ```http
   DELETE /products/{productId}
@@ -81,14 +157,19 @@ To run tests, run the following command
 |:--------------|:--------|:---------------------------|
 | `productId`   | `query` | **Required**. product ID   |
 
+When the resource is successfully deleted - No Content (204) is returned.
 
-#### Product list
+***
+
+### Product list
 
 ```http
   GET /products
 ```
 
-#### Category list
+***
+
+### Category list
 
 ```http
   GET /categories
