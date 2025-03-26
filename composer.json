@@ -80,6 +80,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "*",
         "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12",
         "symfony/maker-bundle": "^1.62"
     }
 }
